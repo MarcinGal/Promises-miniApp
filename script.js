@@ -3,6 +3,11 @@ class App {
         this.listView = new ListView()
         this.userView = new UserView()
         this.notFoundView = new NotFoundView()
+        this.init()
+    }
+
+    init() {
+        this.renderView('listView')
     }
 
     renderView(viewName, params) {
@@ -43,7 +48,7 @@ class ListView {
                     userDiv.innerHTML = user.name + " " + user.lastname
                     userDiv.addEventListener(
                         'click',
-                        () => renderView('userView', {uid: user.uid})
+                        () => renderView('userView', { uid: user.uid })
                     )
                     div.appendChild(userDiv)
                 })
@@ -78,4 +83,3 @@ class NotFoundView {
 }
 
 const app = new App()
-app.renderView('listView')
