@@ -8,13 +8,14 @@ class App {
     renderView(viewName, params) {
         switch (viewName) {
             case 'listView':
-                this.listView.render()
+                this.listView.render(this.renderView.bind(this))
                     .then(viewContent => this.render(viewContent))
                 break
 
             case 'userView':
                 this.userView.render(params.uid)
                     .then(viewContent => this.render(viewContent))
+                    .catch(() => this.render(this.notFoundView.render()))
                 break
 
             case 'notFoundView':
@@ -31,7 +32,7 @@ class App {
 }
 
 class ListView {
-    render() {
+    render(renderView) {
         const promise = fetch('./data/user.json')
             .then(response => response.json())
             .then(data => {
@@ -40,6 +41,10 @@ class ListView {
                 data.forEach(user => {
                     const userDiv = document.createElement('div')
                     userDiv.innerHTML = user.name + " " + user.lastname
+                    userDiv.addEventListener(
+                        'click',
+                        () => renderView('userView', {uid: user.uid})
+                    )
                     div.appendChild(userDiv)
                 })
                 return div
@@ -74,4 +79,3 @@ class NotFoundView {
 
 const app = new App()
 app.renderView('listView')
-app.renderView('userView', {uid: '1111'})
