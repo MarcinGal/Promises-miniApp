@@ -65,7 +65,12 @@ class UserView {
             .then(response => response.json())
             .then(data => {
                 const div = document.createElement('div')
-                div.innerText = data.email
+                const img = document.createElement('img')
+                const textDiv = document.createElement('div')
+                textDiv.innerText = data.email
+                img.setAttribute('src', data.avatar)
+                div.appendChild(img)
+                div.appendChild(textDiv)
                 return div
             })
         return promise
